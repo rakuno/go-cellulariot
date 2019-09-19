@@ -1,2 +1,2 @@
-# Sixfab_Shield_Go
-Go Library
+# go-cellulariot
+Go Sixfab CellularIoT Shield Library
