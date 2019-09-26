@@ -135,7 +135,7 @@ func (c *cellulariot) GetModemStatus() rpio.State {
 }
 
 // Function for sending at comamand to module
-func (c *cellulariot) sendATCommandOnce(command string) {
+func (c *cellulariot) SendATCommandOnce(command string) {
 	c.compose = ""
 	c.compose = command + "\r"
 	_, err := c.port.Write([]byte(c.compose))
@@ -146,14 +146,14 @@ func (c *cellulariot) sendATCommandOnce(command string) {
 }
 
 // Function for sending at command to BG96_AT.
-func (c *cellulariot) sendATComm(command, desiredResponse string) {
+func (c *cellulariot) SendATComm(command, desiredResponse string) {
 	var p []byte
 
-	c.sendATCommandOnce(command)
+	c.SendATCommandOnce(command)
 	timer := time.Now()
 	for {
 		if (time.Now()).Sub(timer) > c.timeout {
-			c.sendATCommandOnce(command)
+			c.SendATCommandOnce(command)
 			timer = time.Now()
 		}
 		c.response = ""
