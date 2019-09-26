@@ -120,13 +120,27 @@ func (c *cellulariot) Disable() {
 	log.Print("BG96 module disabled!")
 }
 
+func (c *cellulariot) PowerUp() {
+	c.pinBg96Powerkey.High()
+
+	for c.GetModemStatus() == rpio.High {
+		// none
+	}
+	log.Print("BG98 module powered up!")
+	c.pinBg96Powerkey.Low()
+}
+
+func (c *cellulariot) GetModemStatus() rpio.State {
+	return c.pinStatus.Read()
+}
+
 // Function for sending at comamand to module
 func (c *cellulariot) sendATCommandOnce(command string) {
 	c.compose = ""
 	c.compose = command + "\r"
 	_, err := c.port.Write([]byte(c.compose))
 	if err != nil {
-		log.Printf("AT command write error, %s", err)
+		log.Println("AT command write error, ", err)
 	}
 	log.Print(c.compose)
 }
