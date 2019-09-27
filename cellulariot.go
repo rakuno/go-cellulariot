@@ -39,7 +39,7 @@ type cellulariotPins struct {
 	pinUserLed      rpio.Pin
 }
 
-type cellulariot struct {
+type Cellulariot struct {
 	board      string
 	ipAddress  string
 	domainName string
@@ -53,7 +53,7 @@ type cellulariot struct {
 	port *serial.Port
 }
 
-func (c *cellulariot) setupPins() {
+func (c *Cellulariot) setupPins() {
 	c.pinBg96enable = rpio.Pin(Bg96Enable)
 	c.pinUserButton = rpio.Pin(UserButton)
 	c.pinStatus = rpio.Pin(Status)
@@ -69,7 +69,7 @@ func (c *cellulariot) setupPins() {
 	c.pinUserButton.Input()
 }
 
-func (c *cellulariot) setupGpio() {
+func (c *Cellulariot) setupGpio() {
 	// Open and map memory to access gpio, check for errors
 	if err := rpio.Open(); err != nil {
 		fmt.Println(err)
@@ -79,22 +79,22 @@ func (c *cellulariot) setupGpio() {
 	c.setupPins()
 }
 
-func (c *cellulariot) cleanupGpio() {
+func (c *Cellulariot) cleanupGpio() {
 	err := rpio.Close()
 	if err != nil {
 		log.Print("can not close GPIO...")
 	}
 }
 
-func (c *cellulariot) closePort() {
+func (c *Cellulariot) closePort() {
 	err := c.port.Close()
 	if err != nil {
 		log.Print("can not close serial...")
 	}
 }
 
-func NewCellulariot() *cellulariot {
-	c := cellulariot{
+func NewCellulariot() *Cellulariot {
+	c := Cellulariot{
 		board:   "Sixfab Raspberry Pi Cellular Iot Shield",
 		timeout: TimeOut,
 	}
@@ -103,23 +103,23 @@ func NewCellulariot() *cellulariot {
 	return &c
 }
 
-func (c *cellulariot) DeleteCellulariot() {
+func (c *Cellulariot) DeleteCellulariot() {
 	c.cleanupGpio()
 	c.closePort()
 }
 
 /* GPIO APIs */
-func (c *cellulariot) Enable() {
+func (c *Cellulariot) Enable() {
 	c.pinBg96enable.Low()
 	log.Print("BG96 module enabled!")
 }
 
-func (c *cellulariot) Disable() {
+func (c *Cellulariot) Disable() {
 	c.pinBg96enable.High()
 	log.Print("BG96 module disabled!")
 }
 
-func (c *cellulariot) PowerUp() {
+func (c *Cellulariot) PowerUp() {
 	c.pinBg96Powerkey.High()
 
 	for c.GetModemStatus() == rpio.High {
@@ -141,12 +141,12 @@ func (c *cellulariot) PowerUp() {
 	c.port = serialPort
 }
 
-func (c *cellulariot) GetModemStatus() rpio.State {
+func (c *Cellulariot) GetModemStatus() rpio.State {
 	return c.pinStatus.Read()
 }
 
 // Function for sending at comamand to module
-func (c *cellulariot) SendATCommandOnce(command string) {
+func (c *Cellulariot) SendATCommandOnce(command string) {
 	c.compose = ""
 	c.compose = command + "\r"
 	_, err := c.port.Write([]byte(c.compose))
@@ -157,7 +157,7 @@ func (c *cellulariot) SendATCommandOnce(command string) {
 }
 
 // Function for sending at command to BG96_AT.
-func (c *cellulariot) SendATComm(command, desiredResponse string) {
+func (c *Cellulariot) SendATComm(command, desiredResponse string) {
 	var p []byte
 
 	c.SendATCommandOnce(command)
