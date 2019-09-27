@@ -94,17 +94,7 @@ func (c *cellulariot) closePort() {
 }
 
 func NewCellulariot() *cellulariot {
-	conf := &serial.Config{
-		Name: devName,
-		Baud: baudrate,
-	}
-	serialPort, err := serial.OpenPort(conf)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	c := cellulariot{
-		port:    serialPort,
 		board:   "Sixfab Raspberry Pi Cellular Iot Shield",
 		timeout: TimeOut,
 	}
@@ -137,6 +127,18 @@ func (c *cellulariot) PowerUp() {
 	}
 	log.Print("BG98 module powered up!")
 	c.pinBg96Powerkey.Low()
+
+	// Open Serial port
+	time.Sleep(500 * time.Millisecond)
+	conf := &serial.Config{
+		Name: devName,
+		Baud: baudrate,
+	}
+	serialPort, err := serial.OpenPort(conf)
+	if err != nil {
+		log.Fatal(err)
+	}
+	c.port = serialPort
 }
 
 func (c *cellulariot) GetModemStatus() rpio.State {
