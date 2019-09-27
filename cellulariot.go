@@ -20,6 +20,12 @@ const (
 	UserLed      = 27
 )
 
+// Serial Parameter
+const (
+	devName  = "/dev/ttyUSB3"
+	baudrate = 115200
+)
+
 // ATCommand Parameter
 const (
 	TimeOut = 3
@@ -88,7 +94,10 @@ func (c *cellulariot) closePort() {
 }
 
 func NewCellulariot() *cellulariot {
-	conf := &serial.Config{Name: "/dev/ttyS0", Baud: 115200}
+	conf := &serial.Config{
+		Name: devName,
+		Baud: baudrate,
+	}
 	serialPort, err := serial.OpenPort(conf)
 	if err != nil {
 		log.Fatal(err)
