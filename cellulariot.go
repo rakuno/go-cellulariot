@@ -125,7 +125,7 @@ func (c *Cellulariot) PowerUp() {
 	for c.GetModemStatus() == rpio.High {
 		// none
 	}
-	log.Print("BG98 module powered up!")
+	log.Print("BG96 module powered up!")
 	c.pinBg96Powerkey.Low()
 
 	// Open Serial port
