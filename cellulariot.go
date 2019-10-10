@@ -130,6 +130,10 @@ func (c *Cellulariot) PowerUp() {
 
 	// Open Serial port
 	time.Sleep(500 * time.Millisecond)
+	c.SerialOpen()
+}
+
+func (c *Cellulariot) SerialOpen() {
 	conf := &serial.Config{
 		Name: devName,
 		Baud: baudrate,
