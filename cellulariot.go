@@ -127,10 +127,11 @@ func (c *Cellulariot) PowerUp() {
 	}
 	log.Print("BG96 module powered up!")
 	c.pinBg96Powerkey.Low()
+}
 
-	// Open Serial port
-	time.Sleep(500 * time.Millisecond)
-	c.SerialOpen()
+func (c *Cellulariot) PowerDown() {
+	log.Print("BG96 module powered down!")
+	c.pinBg96Powerkey.Low()
 }
 
 func (c *Cellulariot) SerialOpen() {
