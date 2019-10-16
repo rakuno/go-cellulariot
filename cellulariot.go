@@ -87,6 +87,9 @@ func (c *Cellulariot) cleanupGpio() {
 }
 
 func (c *Cellulariot) closePort() {
+	if c.port == nil {
+		log.Print("serial is not opened. can not close serial...")
+	}
 	err := c.port.Close()
 	if err != nil {
 		log.Print("can not close serial...")
