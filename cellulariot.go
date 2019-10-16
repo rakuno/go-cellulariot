@@ -131,7 +131,7 @@ func (c *Cellulariot) PowerUp() {
 
 func (c *Cellulariot) PowerDown() {
 	log.Print("BG96 module powered down!")
-	c.pinBg96Powerkey.Low()
+	c.pinBg96Powerkey.High()
 }
 
 func (c *Cellulariot) SerialOpen() {
